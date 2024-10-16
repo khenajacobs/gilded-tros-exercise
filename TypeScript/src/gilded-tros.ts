@@ -12,7 +12,7 @@ export class GildedTros {
     }
 
     private updateItemQuality(item: Item): void {
-        if (item.name === ItemName.B_DAWG_KEYCHAIN as string) {
+        if (item.name == ItemName.B_DAWG_KEYCHAIN) {
             return;
         }
 
