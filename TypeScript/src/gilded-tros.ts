@@ -3,6 +3,10 @@ import { Item } from './item';
 
 export class GildedTros {
 
+    //Quality value properties 
+    private MAXIMUM_QUALITY_VALUE: number = 50
+    private MINIMUM_QUALITY_VALUE: number = 0
+
     constructor(public items: Array<Item>) {}
 
     public updateQuality(): void {
@@ -53,11 +57,11 @@ export class GildedTros {
 
     private increaseQuality(item: Item, amount: number): void {
         //The item quality cannot exceed 50, therefor we either set the quality to quality + amount or 50
-        item.quality = Math.min(50, item.quality + amount);
+        item.quality = Math.min(this.MAXIMUM_QUALITY_VALUE, item.quality + amount);
     }
 
     private decreaseQuality(item: Item, amount: number): void {
         //The item quality cannot go below 0, therefor we either set the quality to quality - amount or 0
-        item.quality = Math.max(0, item.quality - amount);
+        item.quality = Math.max(this.MINIMUM_QUALITY_VALUE, item.quality - amount);
     }
 }
