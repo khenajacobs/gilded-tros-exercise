@@ -12,35 +12,39 @@ export class GildedTros {
     }
 
     private updateItemQuality(item: Item): void {
-        if (item.name == ItemName.B_DAWG_KEYCHAIN) {
-            return;
-        }
-
-        //Good wine business rule(s)
-        if (item.name == ItemName.GOOD_WINE) {
-            this.increaseQuality(item, 1);
-        //Backstage passes quality business rules
-        } else if (item.name == ItemName.BACKSTAGE_PASSES) {
-            if (item.sellIn <= 0) {
-                item.quality = 0;
-
-            } else if (item.sellIn <= 5) {
-                this.increaseQuality(item, 3);
-            } else if (item.sellIn <= 10) {
-                this.increaseQuality(item, 2);
-            } else {
+        switch (item.name) {
+            //B-Dawg contains no business rules
+            case ItemName.B_DAWG_KEYCHAIN:
+            break;
+            // Good wine business rule(s)
+            case ItemName.GOOD_WINE:
                 this.increaseQuality(item, 1);
-            }
-        //Smelly items business rule(s)
-        } else if ([ItemName.DUPLICATE_CODE as string, ItemName.LONG_METHODS as string, ItemName.UGLY_VARIABLE_NAMES as string].includes(item.name)) {
-            //sellIn value larger than 0, we decrease the quality by 4, else by 2
-            this.decreaseQuality(item, item.sellIn <= 0 ? 4 : 2);
-        //All other values business rule(s)
-        } else {
-            //sellIn value larger than 0, we decrease the quality by 2, else by 1
-            this.decreaseQuality(item, item.sellIn <= 0 ? 2 : 1);
+            break;
+            // Backstage passes quality business rules
+            case ItemName.BACKSTAGE_PASSES:
+                if (item.sellIn <= 0) {
+                    item.quality = 0;
+                } else if (item.sellIn <= 5) {
+                    this.increaseQuality(item, 3);
+                } else if (item.sellIn <= 10) {
+                    this.increaseQuality(item, 2);
+                } else {
+                    this.increaseQuality(item, 1);
+                }
+            break;
+            // Smelly items business rule(s)
+            case ItemName.DUPLICATE_CODE:
+            case ItemName.LONG_METHODS:
+            case ItemName.UGLY_VARIABLE_NAMES:
+                this.decreaseQuality(item, item.sellIn <= 0 ? 4 : 2);
+            break;
+        
+            // All other values business rule(s)
+            default:
+                this.decreaseQuality(item, item.sellIn <= 0 ? 2 : 1);
+            break;
         }
-
+        
         //Lower sellIn for all but B-Dawg values
         if (item.name != ItemName.B_DAWG_KEYCHAIN) {
             item.sellIn--;
